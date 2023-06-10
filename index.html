@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/Capture001.png">
+    <title>Academy Classrooms</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Classrooms: Beta</h2>
+        <input type="text" id="input">
+        <select id="days"> <!--weekdaysDropdown-->
+            <option value="Day">Day</option>
+            <option value="mon">Monday</option>
+            <option value="tue">Tuesday</option>
+            <option value="wed">Wednesday</option>
+            <option value="thu">Thursday</option>
+            <option value="fri">Friday</option>
+        </select>
+        <select id="startTime"> <!--timeFromDropdown-->
+            <option value="From">Time From</option>
+            <option value="1000">10</option>
+            <option value="1100">11</option>
+            <option value="1200">12</option>
+            <option value="1300">13</option>
+        </select>
+        <select id="endTime">                                                    <!--timeToDropdown-->
+            <option value="To">Time To</option>
+            <option value="1000">10</option>
+            <option value="1100">11</option>
+            <option value="1200">12</option>
+            <option value="1300">13</option>
+        </select>
+        <button onclick="search()" class="search">Search</button> <!--btn btn-primary-->
+        <button onclick="findAvailability()" class="availability">See Availability</button> <!--btn btn-success-->
+        <button onclick="reset()" class="reset">Reset Filters</button> <!--btn btn-secondary-->
+        <div class="table-responsive" id="searchResults" style="display:  none">
+            <h4>Search Results</h4>
+            <button onclick="cleanSearchResults()" class="button">X</button> <!--btn btn-danger-->
+            <table class="table table-bordered text-center" id="tableId searchResultsGroupsTable">
+                <!--class: table table-bordered text-center; id:searchResultsGroupsTable-->
+                <thead>
+                    <tr class="classTr"> <!--bg-light-gray-->
+                        <th class="classTh">Group</th>
+                        <th class="classTh">Classroom</th>
+                        <th class="classTh">Schedule</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>Ada Lovelace</td>
+                        <td>Available Days and Hours</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>MON: 11:30 - 14:30</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>TUE: 11:30 - 13:30</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>WED: 10:00 - 11:30</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>THU: 11:30 - 14:30</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>William Shockley</td>
+                        <td>Available Days and Hours</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>MON: 12:00 - 17:30, 19:30 - 19:30, 22:00 - :</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>TUE: 12:00 - 13:30, 16:00 - 17:30, 21:00 - 22:00, </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>WED: 12:00 - 19:00, 21:00 - 22:00, </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>THU: 12:00 - 17:30, 19:30 - 19:30, 22:00 - :</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Claude Shannon</td>
+                        <td>Available Days and Hours</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>MON: 11:30 - 18:30, 21:00 - 22:00, </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>TUE: 11:30 - 11:30, 13:30 - 18:30, 21:00 - 22:00, </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>WED: 10:00 - 18:30, 21:00 - 22:00, </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>THU: 11:30 - 18:30, 21:00 - 22:00, </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-responsive"> <!--table-responsive-->
+            <h3>Ada Lovelace</h3>
+            <table class="table table-bordered text-center"> <!--table table-bordered text-center-->
+                <thead>
+                    <tr class="classTr"> <!--bg-light-gray-->
+                        <th class="classTh">Time</th> <!--text-uppercase-->
+                        <th class="classTh">MON</th>
+                        <th class="classTh">TUE</th>
+                        <th class="classTh">WED</th>
+                        <th class="classTh">THU</th>
+                        <th class="classTh">FRI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="classTd">10:00</td> <!--align-middle-->
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                CP1
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Hayk Darbinyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                CP4
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Hayk Darbinyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                CP1
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Hayk Darbinyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                CP4
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Hayk Darbinyan
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">10:30</td>
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                CP1
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Hayk Darbinyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                CP4
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Hayk Darbinyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                CP1
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Hayk Darbinyan
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                CP4
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Hayk Darbinyan
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">11:00</td>
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                CP1
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Hayk Darbinyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                CP4
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Hayk Darbinyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                CP1
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Hayk Darbinyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                CP4
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Hayk Darbinyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                UI/UX Beginners
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Samvel Hovsepyan
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">11:30</td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                UI/UX Beginners
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Samvel Hovsepyan
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">12:00</td>
+                        <td></td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                SR90
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Vardan Grigoryan
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                UI/UX Beginners
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Samvel Hovsepyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                W5-CP9
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Hayk Darbinyan
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">12:30</td>
+                        <td></td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                SR90
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Vardan Grigoryan
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                UI/UX Beginners
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Samvel Hovsepyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                W5-CP9
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Hayk Darbinyan
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">13:00</td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                SR90
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Vardan Grigoryan
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <span class="red">
+                                <!--bg-lightred padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                UI/UX Beginners
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Samvel Hovsepyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                W5-CP9
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Hayk Darbinyan
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-responsive">
+            <h3>Alan Turing</h3>
+            <table class="table table-bordered text-center">      <!--table table-bordered text-center-->
+                <thead>
+                    <tr class="classTr">                          <!--bg-light-gray-->
+                        <th class="classTh">Time</th>
+                        <th class="classTh">MON</th>
+                        <th class="classTh">TUE</th>
+                        <th class="classTh">WED</th>
+                        <th class="classTh">THU</th>
+                        <th class="classTh">FRI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="classTd">10:00</td>        <!--align-middle-->
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                W3-English / Int
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Zara Pirumyan
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">10:30</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                W3-English / Int
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Zara Pirumyan
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">11:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                W3-English / Int
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Zara Pirumyan
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">11:30</td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                W3-English / Int
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Zara Pirumyan
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">12:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                W3-English / Beg
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Zara Pirumyan
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">12:30</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                W3-English / Beg
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Zara Pirumyan
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">13:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                W3-English / Beg
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Zara Pirumyan
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-responsive">
+            <h3>Claude Shannon</h3>
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr class="bg-light-gray">
+                        <th class="classTh">Time</th>
+                        <th class="classTh">MON</th>
+                        <th class="classTh">TUE</th>
+                        <th class="classTh">WED</th>
+                        <th class="classTh">THU</th>
+                        <th class="classTh">FRI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="classTd">10:00</td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                EM1
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Syuniq Mkrtchyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                EM4
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Narek Nazaryan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                EM1
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Syuniq Mkrtchyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                EM4
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Narek Nazaryan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                Graphic Design G1
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Laura Nazinyan
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">10:30</td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                EM1
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Syuniq Mkrtchyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                EM4
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Narek Nazaryan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                EM1
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Syuniq Mkrtchyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                EM4
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Narek Nazaryan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                Graphic Design G1
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Laura Nazinyan
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">11:00</td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                EM1
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Syuniq Mkrtchyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                EM4
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Narek Nazaryan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                EM1
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Syuniq Mkrtchyan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                EM4
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Narek Nazaryan
+                            </div>
+                        </td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                Graphic Design G1
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Laura Nazinyan
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">11:30</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                Graphic Design G1
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Laura Nazinyan
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">12:00</td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                English / Practice
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Vardges Arsenyan
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                Graphic Design G2
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Laura Nazinyan
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">12:30</td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                English / Practice
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Vardges Arsenyan
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                Graphic Design G2
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Laura Nazinyan
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="classTd">13:00</td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                English / Practice
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Vardges Arsenyan
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <span class="green">
+                                <!--bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13-->
+                                Graphic Design G2
+                            </span>
+                            <div class="gray"> <!--margin-2px-top font-size13 text-light-gray-->
+                                Laura Nazinyan
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
